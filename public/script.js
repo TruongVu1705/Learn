@@ -14,14 +14,13 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     });
 
     const data = await res.json();
-    
+
     if (res.ok) {
-      // 👉 Chuyển hướng đến Google Maps
-      window.location.href = "https://maps.google.com";
+      // Nếu login thành công -> chuyển tới Google Maps
+      window.location.href = "https://www.google.com/maps";
     } else {
       alert(data.message || "Đăng nhập thất bại");
     }
-
   } catch (error) {
     alert("Không thể kết nối tới server");
     console.error(error);
