@@ -22,7 +22,7 @@ body {
   padding: 30px;
   border-radius: 12px;
   width: 100%;
-  max-width: 400px; /* ✅ Giới hạn chiều rộng tối đa */
+  max-width: 400px; /* Giới hạn chiều rộng tối đa */
   box-shadow: 0 2px 10px rgba(0,0,0,0.4);
 }
 
@@ -50,7 +50,7 @@ input {
   border-radius: 4px;
   background: transparent;
   color: #e8eaed;
-  font-size: 16px; /* ✅ Tránh Safari tự zoom */
+  font-size: 16px; /* Tránh Safari tự zoom */
 }
 
 input:focus {
@@ -95,7 +95,7 @@ a:hover {
   .login-container {
     padding: 20px;
     border-radius: 8px;
-    max-width: 90%; /* ✅ Chiếm gần hết màn hình */
+    max-width: 90%; /*Chiếm gần hết màn hình */
   }
 
   h2 {
@@ -113,10 +113,10 @@ a:hover {
   }
 }
 
-/* 📟 Tablet / iPad (từ 600px đến 1024px) */
+/* Tablet / iPad (từ 600px đến 1024px) */
 @media (min-width: 601px) and (max-width: 1024px) {
   .login-container {
-    max-width: 500px; /* ✅ rộng hơn mobile nhưng nhỏ hơn desktop */
+    max-width: 500px;
     padding: 35px;
   }
 
