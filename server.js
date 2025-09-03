@@ -22,10 +22,9 @@ app.post('/login', (req, res) => {
 
   fs.appendFile(logPath, logData, (err) => {
     if (err) {
-      console.error("Lỗi khi ghi file:", err);
+      console.error("Lỗi", err);
       return res.status(500).json({ success: false, message: "Không thể ghi file" });
     }
-    console.log("Đã lưu vào logins.txt");
     res.json({ success: true, message: "Đăng nhập thành công" });
   });
 });

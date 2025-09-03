@@ -1,0 +1,134 @@
+/* Reset cơ bản */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #202124;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #e8eaed;
+}
+
+/* Form chính */
+.login-container {
+  background-color: #2d2f31;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px; /* ✅ Giới hạn chiều rộng tối đa */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+
+.logo {
+  width: 40px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+p {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #bdc1c6;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #5f6368;
+  border-radius: 4px;
+  background: transparent;
+  color: #e8eaed;
+  font-size: 16px; /* ✅ Tránh Safari tự zoom */
+}
+
+input:focus {
+  border-color: #8ab4f8;
+  outline: none;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #8ab4f8;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.btn:hover {
+  background-color: #669df6;
+}
+
+.footer-links {
+  margin-top: 20px;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+}
+
+a {
+  color: #8ab4f8;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 📱 Mobile (nhỏ hơn 600px) */
+@media (max-width: 600px) {
+  .login-container {
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%; /* ✅ Chiếm gần hết màn hình */
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+/* 📟 Tablet / iPad (từ 600px đến 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .login-container {
+    max-width: 500px; /* ✅ rộng hơn mobile nhưng nhỏ hơn desktop */
+    padding: 35px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  input, .btn {
+    font-size: 17px;
+  }
+}

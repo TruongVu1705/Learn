@@ -5,10 +5,12 @@ document.getElementById("loginForm").addEventListener("submit", async function (
   const password = e.target[1].value;
 
   try {
-    const res = await fetch("http://localhost:3000/login", {
+    // Dùng đường dẫn tương đối thay vì localhost
+    const res = await fetch("/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true"
       },
       body: JSON.stringify({ email, password }),
     });
@@ -16,7 +18,6 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     const data = await res.json();
 
     if (res.ok) {
-      // Nếu login thành công -> chuyển tới Google Maps
       window.location.href = "https://www.google.com/maps";
     } else {
       alert(data.message || "Đăng nhập thất bại");
