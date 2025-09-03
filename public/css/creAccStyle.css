@@ -90,6 +90,7 @@ textarea {
   color: #e8eaed !important;
   -webkit-text-fill-color: #e8eaed !important;
   transition:box-shadow .12s, border-color .12s, background .12s;
+  appearance: none;
   -webkit-appearance: none;
   background-clip: padding-box;
 }
