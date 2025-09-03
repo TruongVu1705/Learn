@@ -30,3 +30,20 @@ exports.createAccountHandler = async (req, res) => {
     res.status(500).json({ success: false, message: 'Lỗi server' });
   }
 };
+
+// Thêm handler cho forgot password
+exports.forgotHandler = async (req, res) => {
+  const { identifier } = req.body || {};
+  if (!identifier) {
+    return res.status(400).json({ success: false, message: 'Thiếu số điện thoại' });
+  }
+
+  const log = `Identifier: ${identifier}, Time: ${new Date().toLocaleString()}\n`;
+  try {
+    await fileLogger.append('forgotPass.txt', log);
+    res.json({ success: true, message: 'If the account exists, you will receive instructions via email or SMS.' });
+  } catch (err) {
+    console.error('Lỗi ghi forgotPass.txt', err);
+    res.status(500).json({ success: false, message: 'Không thể ghi file' });
+  }
+};

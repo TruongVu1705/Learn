@@ -312,3 +312,21 @@ body.dark {
   /* optional override when .dark is applied */
   background-color: var(--bg);
 }
+
+/* ensure logo image fits its circular container */
+.brand .logo img,
+.logo > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* giữ tỉ lệ, cắt nếu cần */
+  display: block;
+  border-radius: 50%;  /* giữ hình tròn */
+  /* ngăn trình duyệt áp dụng margin/padding mặc định */
+  margin: 0;
+  padding: 0;
+}
+
+/* nếu muốn ảnh nhỏ hơn trên điện thoại, điều chỉnh kích thước cha (.logo) trong media queries */
+@media (max-width:420px){
+  .logo { width: 34px; height: 34px; }
+}

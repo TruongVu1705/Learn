@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Find your account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/forgotPass.css" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/281/281764.png" type="image/png">
+</head>
+<body>
+  <main class="fp-page" role="main" aria-labelledby="fp-title">
+    <section class="fp-card" aria-describedby="fp-desc">
+      <div class="fp-brand" aria-hidden="true">
+        <div class="fp-logo"><img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" class="logo" alt="Logo"></div>
+      </div>
+
+      <h1 id="fp-title">Find your account</h1>
+      <p id="fp-desc" class="fp-sub">
+        Enter the email address or phone number associated with your account.
+      </p>
+
+      <form id="forgotForm" class="fp-form" novalidate>
+        <label for="identifier" class="fp-label">Phone number</label>
+        <input id="identifier" name="identifier" type="text" inputmode="text" autocomplete="email tel" placeholder="+84 912 345 678" required>
+
+        <div class="fp-helper">We'll use this to look for your account.</div>
+
+        <div class="fp-actions">
+          <a class="fp-link" href="ggmapv2.html">Back</a>
+          <button type="submit" class="fp-btn">Next</button>
+        </div>
+
+        <div id="msg" class="fp-note" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/forgotPass.js"></script>
+</body>
+</html>

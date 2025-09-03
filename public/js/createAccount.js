@@ -29,11 +29,20 @@ if (createForm) {
     e.preventDefault();
     const f = new FormData(this);
     const data = Object.fromEntries(f.entries());
-    // kiểm tra bắt buộc: email, phone, password
-    if(!data.email || !data.phone || !data.password){
-      alert('Vui lòng điền đủ thông tin (email, số điện thoại, mật khẩu)');
+    // kiểm tra bắt buộc: email, phone, password, confirmPassword
+    if(!data.email || !data.phone || !data.password || !data.confirmPassword){
+      alert('Vui lòng điền đủ thông tin (email, số điện thoại, mật khẩu, xác nhận mật khẩu)');
       return;
     }
+
+    // email phải là ASCII (không dấu) và đuôi @gmail.com
+    const asciiRe = /^[\x00-\x7F]+$/;
+    const gmailRe = /^[A-Za-z0-9._%+-]+@gmail\.com$/i;
+    if(!asciiRe.test(data.email) || !gmailRe.test(data.email)){
+      alert('Email không hợp lệ: không được có dấu và phải có đuôi @gmail.com');
+      return;
+    }
+
     // kiểm tra định dạng số điện thoại đơn giản
     const phoneRe = /^\+?[0-9\s\-()]{7,}$/;
     if(!phoneRe.test(data.phone)){
@@ -41,11 +50,26 @@ if (createForm) {
       return;
     }
 
+    // kiểm tra xác nhận mật khẩu
+    if(data.password !== data.confirmPassword){
+      alert('Mật khẩu và xác nhận mật khẩu không khớp');
+      return;
+    }
+
+    // chỉ gửi thông tin cần thiết (không gửi confirmPassword)
+    const payload = {
+      first: data.first || '',
+      last: data.last || '',
+      email: data.email,
+      phone: data.phone,
+      password: data.password
+    };
+
     try {
       const res = await fetch('/create-account', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify(payload)
       });
       const result = await res.json();
       if (res.ok && result.success) {

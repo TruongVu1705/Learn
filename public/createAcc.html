@@ -23,11 +23,11 @@
         <div class="row field">
           <div style="flex:1">
             <label for="first">First Name</label>
-            <input id="first" name="first" type="text" required>
+            <input id="first" name="first" type="text" placeholder="First Name" required>
           </div>
           <div style="flex:1">
             <label for="last">Last Name</label>
-            <input id="last" name="last" type="text"required>
+            <input id="last" name="last" type="text" placeholder="Last Name" required>
           </div>
         </div>
 
@@ -50,6 +50,12 @@
           <div class="helper">Use letters, numbers and special characters for added security.</div>
         </div>
 
+        <div class="field">
+          <label for="confirmPassword">Confirm password</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm password" minlength="8" required>
+          <div class="helper">Re-enter your password to confirm.</div>
+        </div>
+        
         <div class="field actions">
           <a class="link" href="ggmapv2.html">Return to login</a>
           <button class="btn" type="submit">Next</button>
