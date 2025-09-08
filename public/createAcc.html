@@ -20,39 +20,64 @@
       </div>
 
       <form id="createForm" novalidate>
+        <!-- Thông báo lỗi -->
+        <div id="errorMessage" class="error-message" style="display: none;">
+          <div class="error-content">
+            <svg class="error-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            <span id="errorText"></span>
+            <button type="button" class="error-close" onclick="hideError()">&times;</button>
+          </div>
+        </div>
+
         <div class="row field">
           <div style="flex:1">
             <label for="first">First Name</label>
             <input id="first" name="first" type="text" placeholder="First Name" required>
+            <div class="field-error" id="firstError"></div>
           </div>
           <div style="flex:1">
             <label for="last">Last Name</label>
             <input id="last" name="last" type="text" placeholder="Last Name" required>
+            <div class="field-error" id="lastError"></div>
           </div>
         </div>
 
         <div class="field">
           <label for="email">Email</label>
           <input id="email" name="email" type="email" placeholder="example@gmail.com" required>
+          <div class="field-error" id="emailError"></div>
           <div class="helper">You can use an existing email or create a new address.</div>
         </div>
 
         <div class="field">
           <label for="phone">Phone number</label>
           <input id="phone" name="phone" type="tel" placeholder="+84 912 345 678" pattern="^\+?[0-9\s\-()]{7,}$" required>
+          <div class="field-error" id="phoneError"></div>
           <div class="helper">Enter phone with country code, e.g. +84 912 345 678</div>
         </div>
         
         <div class="field">
           <label for="password">Password</label>
-          <input id="password" name="password" type="password" placeholder="At least 8 characters" minlength="8" required>
+          <div class="input-wrapper">
+            <input id="password" name="password" type="password" placeholder="At least 8 characters" minlength="8" required>
+            <button id="togglePassword" class="toggle-password" type="button" aria-label="Hiện/ẩn mật khẩu" title="Hiện/ẩn mật khẩu">
+            </button>
+          </div>
+          <div class="field-error" id="passwordError"></div>
           <div class="password-meter" aria-hidden="true"><i id="meterBar"></i></div>
           <div class="helper">Use letters, numbers and special characters for added security.</div>
         </div>
 
         <div class="field">
           <label for="confirmPassword">Confirm password</label>
-          <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm password" minlength="8" required>
+          <div class="input-wrapper">
+            <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm password" minlength="8" required>
+            <button id="toggleConfirmPassword" class="toggle-password" type="button" aria-label="Hiện/ẩn mật khẩu xác nhận" title="Hiện/ẩn mật khẩu xác nhận">
+            </button>
+          </div>
+          <div class="field-error" id="confirmPasswordError"></div>
           <div class="helper">Re-enter your password to confirm.</div>
         </div>
         

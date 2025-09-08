@@ -14,8 +14,24 @@
     <h2>Sign in</h2>
     <p>Please sign in to continue to the app.</p>
     <form id="loginForm" method="POST">
-      <input type="email" placeholder="Email or phone" required>
-      <input type="password" placeholder="Password" required>
+      <div id="errorMessage" class="error-message" style="display: none;">
+        <div class="error-content">
+          <svg class="error-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+          <span id="errorText"></span>
+          <button type="button" class="error-close" onclick="hideError()">&times;</button>
+        </div>
+      </div>
+
+      <input id="email" name="email" type="email" placeholder="Email or phone" required>
+      <div class="field-error" id="emailError"></div>
+
+      <div class="input-wrapper">
+        <input id="password" name="password" type="password" placeholder="Password" required>
+        <button id="togglePassword" class="toggle-password" type="button" aria-label="Show/Hide password" title="Show/Hide password"></button>
+      </div>
+      <div class="field-error" id="passwordError"></div>
       <button class="btn" type="submit">Next</button>
     </form>
     <div class="footer-links">

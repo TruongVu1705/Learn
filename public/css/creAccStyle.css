@@ -313,6 +313,54 @@ body.dark {
   background-color: var(--bg);
 }
 
+/* Ô nhập có nút eye */
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  padding-right: 50px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  color: #8ab4f8;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.toggle-password:hover {
+  background: rgba(138, 180, 248, 0.2);
+  color: #669df6;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.toggle-password:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.toggle-password svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.toggle-password:hover svg {
+  transform: scale(1.1);
+}
+
 /* ensure logo image fits its circular container */
 .brand .logo img,
 .logo > img {
@@ -324,6 +372,104 @@ body.dark {
   /* ngăn trình duyệt áp dụng margin/padding mặc định */
   margin: 0;
   padding: 0;
+}
+
+/* Thông báo lỗi */
+.error-message {
+  background: linear-gradient(135deg, #ff4d4f 0%, #ff7875 100%);
+  border: 1px solid #ff4d4f;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.2);
+  animation: slideDown 0.3s ease-out;
+}
+
+.error-content {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 10px;
+}
+
+.error-icon {
+  width: 20px;
+  height: 20px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.error-content span {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.error-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.error-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Thông báo lỗi cho từng trường */
+.field-error {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 4px;
+  display: none;
+  animation: fadeIn 0.2s ease-in;
+}
+
+.field-error.show {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Style cho input khi có lỗi */
+input.error {
+  border-color: #ff4d4f !important;
+  box-shadow: 0 0 0 4px rgba(255, 77, 79, 0.1) !important;
+}
+
+input.error:focus {
+  border-color: #ff4d4f !important;
+  box-shadow: 0 0 0 4px rgba(255, 77, 79, 0.2) !important;
 }
 
 /* nếu muốn ảnh nhỏ hơn trên điện thoại, điều chỉnh kích thước cha (.logo) trong media queries */
