@@ -90,6 +90,62 @@ a:hover {
   text-decoration: underline;
 }
 
+/* inline error / form message styles */
+.error {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin: 6px 0 10px 0;
+  line-height: 1.2;
+}
+.form-message {
+  margin: 8px 0 10px 0;
+  font-size: 14px;
+  color: #bdc1c6;
+}
+.form-message.error {
+  color: #ff6b6b;
+}
+
+/* password toggle styling */
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.password-field input {
+  flex: 1;
+  padding-right: 84px; /* leave space for button */
+}
+.pwd-toggle {
+  position: absolute;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: var(--accent, #1a73e8);
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+.pwd-toggle svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.pwd-toggle:focus {
+  outline: 2px solid rgba(138,180,248,0.22);
+  outline-offset: 2px;
+}
+.pwd-toggle:active { transform: translateY(1px); }
+/* mobile adjustment */
+@media (max-width:420px){
+  .password-field input { padding-right: 72px; }
+  .pwd-toggle { right:6px; padding:6px; }
+}
+
 /* 📱 Mobile (nhỏ hơn 600px) */
 @media (max-width: 600px) {
   .login-container {

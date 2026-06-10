@@ -35,12 +35,14 @@
           <label for="email">Email</label>
           <input id="email" name="email" type="email" placeholder="example@gmail.com" required>
           <div class="helper">You can use an existing email or create a new address.</div>
+          <div class="error" id="emailError" aria-live="polite"></div>
         </div>
 
         <div class="field">
           <label for="phone">Phone number</label>
           <input id="phone" name="phone" type="tel" placeholder="+84 912 345 678" pattern="^\+?[0-9\s\-()]{7,}$" required>
           <div class="helper">Enter phone with country code, e.g. +84 912 345 678</div>
+          <div class="error" id="phoneError" aria-live="polite"></div>
         </div>
         
         <div class="field">
@@ -48,12 +50,14 @@
           <input id="password" name="password" type="password" placeholder="At least 8 characters" minlength="8" required>
           <div class="password-meter" aria-hidden="true"><i id="meterBar"></i></div>
           <div class="helper">Use letters, numbers and special characters for added security.</div>
+          <div class="error" id="passwordError" aria-live="polite"></div>
         </div>
 
         <div class="field">
           <label for="confirmPassword">Confirm password</label>
           <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm password" minlength="8" required>
           <div class="helper">Re-enter your password to confirm.</div>
+          <div class="error" id="confirmError" aria-live="polite"></div>
         </div>
         
         <div class="field actions">
@@ -62,6 +66,7 @@
         </div>
 
         <div class="small">By continuing, you agree to the Terms of Service and Privacy Policy.</div>
+        <div class="form-message" id="formMsg" aria-live="polite"></div>
       </form>
     </div>
   </div>

@@ -23,11 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (res.ok && result.success) {
         msg.textContent = result.message || 'Request sent.';
       } else {
-        msg.textContent = result.message || 'Có lỗi khi gửi yêu cầu.';
+        msg.textContent = result.message || 'There was an error sending the request.';
       }
     } catch (err) {
       console.error(err);
-      msg.textContent = 'Không thể kết nối tới server. Vui lòng thử lại.';
+      msg.textContent = 'Unable to connect to server. Please try again.';
     }
   });
 });

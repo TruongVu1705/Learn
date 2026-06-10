@@ -15,9 +15,7 @@ if (passwordEl && meter) {
   passwordEl.addEventListener('input', () => {
     const s = scorePassword(passwordEl.value);
     const widths = [0, 25, 50, 75, 100];
-    // set width and level class
     meter.style.width = widths[s] + '%';
-    // reset classes then add new one
     meter.classList.remove('meter-0','meter-1','meter-2','meter-3','meter-4');
     meter.classList.add('meter-' + s);
   });
@@ -25,38 +23,62 @@ if (passwordEl && meter) {
 
 const createForm = document.getElementById('createForm');
 if (createForm) {
+  // helper to set/clear inline errors
+  const setError = (id, msg) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = msg || '';
+  };
+  const clearErrors = () => {
+    ['emailError','phoneError','passwordError','confirmError','formMsg'].forEach(id => setError(id,''));
+  };
+
   createForm.addEventListener('submit', async function(e){
     e.preventDefault();
+    clearErrors();
+
     const f = new FormData(this);
     const data = Object.fromEntries(f.entries());
-    // kiểm tra bắt buộc: email, phone, password, confirmPassword
+
+    // basic required
     if(!data.email || !data.phone || !data.password || !data.confirmPassword){
-      alert('Vui lòng điền đủ thông tin (email, số điện thoại, mật khẩu, xác nhận mật khẩu)');
+      if(!data.email) setError('emailError','Email is required');
+      if(!data.phone) setError('phoneError','Phone number is required');
+      if(!data.password) setError('passwordError','Password is required');
+      if(!data.confirmPassword) setError('confirmError','Please confirm password');
       return;
     }
 
-    // email phải là ASCII (không dấu) và đuôi @gmail.com
+    // email ascii + gmail.com
     const asciiRe = /^[\x00-\x7F]+$/;
     const gmailRe = /^[A-Za-z0-9._%+-]+@gmail\.com$/i;
     if(!asciiRe.test(data.email) || !gmailRe.test(data.email)){
-      alert('Email không hợp lệ: không được có dấu và phải có đuôi @gmail.com');
+      setError('emailError','Invalid email — ASCII characters only and must end with @gmail.com');
+      document.getElementById('email').focus();
       return;
     }
 
-    // kiểm tra định dạng số điện thoại đơn giản
+    // phone simple check
     const phoneRe = /^\+?[0-9\s\-()]{7,}$/;
     if(!phoneRe.test(data.phone)){
-      alert('Vui lòng nhập số điện thoại hợp lệ (ví dụ +84 912 345 678)');
+      setError('phoneError','Invalid phone number (eg +84 912 345 678)');
+      document.getElementById('phone').focus();
       return;
     }
 
-    // kiểm tra xác nhận mật khẩu
+    // password rules
+    if(data.password.length < 8){
+      setError('passwordError','Password must be at least 8 characters');
+      document.getElementById('password').focus();
+      return;
+    }
+
     if(data.password !== data.confirmPassword){
-      alert('Mật khẩu và xác nhận mật khẩu không khớp');
+      setError('confirmError','Confirmation password does not match');
+      document.getElementById('confirmPassword').focus();
       return;
     }
 
-    // chỉ gửi thông tin cần thiết (không gửi confirmPassword)
+    // send payload (no confirmPassword)
     const payload = {
       first: data.first || '',
       last: data.last || '',
@@ -73,14 +95,15 @@ if (createForm) {
       });
       const result = await res.json();
       if (res.ok && result.success) {
-        alert(result.message || 'Tạo tài khoản thành công');
-        window.location.href = 'ggmapv2.html';
+        setError('formMsg', result.message || 'Account created successfully');
+        // optional redirect after short delay
+        setTimeout(() => window.location.href = 'ggmapv2.html', 900);
       } else {
-        alert(result.message || 'Có lỗi khi tạo tài khoản');
+        setError('formMsg', result.message || 'Error creating account');
       }
     } catch (err) {
       console.error(err);
-      alert('Không thể kết nối tới server');
+      setError('formMsg', 'Unable to connect to server');
     }
   });
 }

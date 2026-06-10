@@ -1,0 +1,32 @@
+/* Simple layout for assembly viewer */
+:root{
+  --bg: #0f1720;
+  --panel: #111318;
+  --muted: #9aa4b2;
+  --accent: #8ab4f8;
+  --card-shadow: 0 8px 20px rgba(2,6,23,0.6);
+  font-family: Inter, Roboto, system-ui, Arial, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#e6eef8}
+.assembly-page{display:flex;gap:18px;min-height:100vh;padding:22px}
+.viewer-area{flex:1;position:relative;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#08101a,#08121a);box-shadow:var(--card-shadow)}
+.canvas-wrap{width:100%;height:100%;min-height:560px}
+canvas#assemblyCanvas{width:100%;height:100%;display:block}
+.controls-top{position:absolute;top:10px;left:10px;z-index:10}
+.steps-panel{width:320px;background:var(--panel);padding:18px;border-radius:12px;box-shadow:var(--card-shadow)}
+.steps-panel h2{margin:0 0 8px;font-size:18px}
+.step-text{min-height:64px;color:var(--muted);margin-bottom:12px}
+.step-controls{display:flex;gap:8px}
+.btn{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04);padding:8px 12px;border-radius:8px;cursor:pointer}
+.btn.primary{background:var(--accent);color:#07101a;border:none}
+.btn.small{padding:6px 8px;font-size:13px}
+.notes{margin-top:12px;color:var(--muted);font-size:13px}
+.model-note{margin-top:12px;color:var(--muted);font-size:13px}
+code{background:rgba(255,255,255,0.02);padding:2px 6px;border-radius:4px;color:#cfe6ff}
+
+@media (max-width: 900px){
+  .assembly-page{flex-direction:column;padding:12px}
+  .steps-panel{width:100%}
+  .canvas-wrap{min-height:420px}
+}

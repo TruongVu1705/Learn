@@ -6,12 +6,19 @@ const authRoutes = require('./routes/auth');
 const app = express();
 const port = 3000;
 
+// app.use(express.json());
+// app.use(express.static('public'));
+// app.use('/', authRoutes);
+
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'ggmapv2.html'));
+// });
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('Monopoly'));
 app.use('/', authRoutes);
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'ggmapv2.html'));
+  res.sendFile(path.join(__dirname, 'Monopoly', 'indexMono.html'));
 });
 
 app.listen(port, () => {

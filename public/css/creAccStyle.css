@@ -330,3 +330,20 @@ body.dark {
 @media (max-width:420px){
   .logo { width: 34px; height: 34px; }
 }
+
+/* inline error / form message styles */
+.error {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin-top: 8px;
+  line-height: 1.2;
+}
+.form-message {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--muted);
+}
+/* success message override */
+.form-message.success {
+  color: #8ab4f8;
+}

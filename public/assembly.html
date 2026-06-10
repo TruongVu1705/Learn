@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>3D Assembly Instructions</title>
+  <link rel="stylesheet" href="css/assembly.css">
+</head>
+<body>
+  <main class="assembly-page">
+    <section class="viewer-area">
+      <div id="canvasWrap" class="canvas-wrap">
+        <!-- Three.js canvas will be injected here -->
+        <canvas id="assemblyCanvas"></canvas>
+      </div>
+      <div class="controls-top">
+        <button id="resetView" class="btn small">Reset view</button>
+      </div>
+    </section>
+
+    <aside class="steps-panel">
+      <h2>Assembly Steps</h2>
+      <div id="stepText" class="step-text">Use the Next button to advance steps.</div>
+      <div class="step-controls">
+        <button id="prevStep" class="btn">Prev</button>
+        <button id="nextStep" class="btn primary">Next</button>
+      </div>
+      <div class="notes">Tip: drag to rotate, scroll to zoom, right-drag to pan.</div>
+      <hr>
+      <div class="model-note">This demo uses simple boxes as parts. Replace with a glTF model in <code>assembly.js</code> for real content.</div>
+    </aside>
+  </main>
+
+  <script type="module" src="js/assembly.js"></script>
+</body>
+</html>

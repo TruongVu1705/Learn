@@ -1,0 +1,216 @@
+<!--
+VEX-GO 3D Step-by-Step Demo (fixed)
+Single-file HTML (Three.js) to preview step-by-step assembly for VEX GO.
+
+Notes:
+- Fixed missing braces and removed duplicated script blocks.
+- Single module script handles loading many formats and step uploads.
+-->
+
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VEX GO — Hướng dẫn lắp ráp 3D (Step-by-step)</title>
+  <style>
+    :root{--accent:#2b6ef6;--bg:#0f1720;--panel:#0b1220;--muted:#9aa7bf}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{display:flex;background:linear-gradient(180deg,#071024 0%, #0f1720 100%);color:#e6eef9}
+    .app{display:grid;grid-template-columns:320px 1fr;gap:12px;width:100%;height:100vh;padding:12px;box-sizing:border-box}
+    .sidebar{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(2,6,23,0.6);overflow:auto}
+    .title{font-size:18px;font-weight:600;margin-bottom:8px}
+    .subtitle{font-size:13px;color:var(--muted);margin-bottom:12px}
+    .steps-list{list-style:none;padding:0;margin:0}
+    .step-item{padding:10px;border-radius:8px;margin-bottom:8px;cursor:pointer;background:transparent;display:flex;gap:8px;align-items:center}
+    .step-item.active{background:linear-gradient(90deg, rgba(43,110,246,0.14), rgba(43,110,246,0.06));box-shadow:0 4px 8px rgba(43,110,246,0.06);} 
+    .step-badge{min-width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.03);font-weight:600}
+    .controls{display:flex;gap:8px;margin-top:12px}
+    button{background:var(--accent);color:white;border:0;padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:600}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+    .viewer{border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(2,6,23,0.6);position:relative}
+    #canvas-container{width:100%;height:100%;min-height:420px;background:#071028}
+    .ui-top-right{position:absolute;top:12px;right:12px;display:flex;gap:8px}
+    .caption{position:absolute;left:12px;bottom:12px;background:rgba(2,6,23,0.6);padding:10px;border-radius:10px;max-width:60%;font-size:14px}
+    .footer-hint{font-size:12px;color:var(--muted);margin-top:10px}
+    .file-uploader{margin-top:10px;font-size:13px}
+    @media(max-width:900px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr}.sidebar{order:2;height:36vh}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="title">VEX GO — Hướng dẫn 3D</div>
+      <div class="subtitle">Xoay 3D • Step-by-step • Phóng to/điều hướng</div>
+
+      <div>
+        <strong>Steps</strong>
+        <ul id="steps" class="steps-list"></ul>
+      </div>
+
+      <div class="controls">
+        <button id="prevBtn">⟵ Trước</button>
+        <button id="nextBtn">Sau ⟶</button>
+        <button id="resetCamera" class="ghost">Reset</button>
+      </div>
+
+      <div class="file-uploader">
+        <label style="display:block">Upload step models (GLB/GLTF/OBJ/STL/FBX/...):</label>
+        <input id="fileInput" type="file" accept=".glb,.gltf,.obj,.fbx,.stl,.ply,.3ds,.dae" multiple />
+        <div class="footer-hint">Bạn có thể kéo nhiều file để tạo các bước, tên file sẽ đặt theo thứ tự.</div>
+      </div>
+
+      <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+        Phím tắt: ← / → chuyển bước · Space bật/tắt tự quay
+      </div>
+    </aside>
+
+    <main class="viewer">
+      <div id="canvas-container"></div>
+      <div class="ui-top-right">
+        <button id="autorotateBtn" class="ghost">Auto-rotate</button>
+        <button id="fitBtn" class="ghost">Fit</button>
+      </div>
+      <div id="caption" class="caption">Chuẩn bị mô hình...</div>
+    </main>
+  </div>
+
+  <!-- Single module script: Three.js + loaders -->
+  <script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three/build/three.module.js';
+import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three/examples/jsm/loaders/GLTFLoader.js';
+import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three/examples/jsm/loaders/OBJLoader.js';
+import { STLLoader } from 'https://cdn.jsdelivr.net/npm/three/examples/jsm/loaders/STLLoader.js';
+import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three/examples/jsm/loaders/FBXLoader.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three/examples/jsm/controls/OrbitControls.js';
+
+// === BASIC SETUP ===
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xdddddd);
+
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 0, 5);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+// attach renderer into the canvas container instead of document.body
+const canvasContainer = document.getElementById('canvas-container');
+function resizeRendererToContainer() {
+  const w = canvasContainer.clientWidth;
+  const h = canvasContainer.clientHeight || window.innerHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+canvasContainer.appendChild(renderer.domElement);
+resizeRendererToContainer();
+
+// === CONTROLS ===
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.1;
+controls.rotateSpeed = 0.5;
+controls.zoomSpeed = 0.8;
+
+// === LIGHTING ===
+const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
+scene.add(hemi);
+
+const dir = new THREE.DirectionalLight(0xffffff, 1);
+dir.position.set(5, 5, 5);
+scene.add(dir);
+
+let currentModel = null;
+
+function clearModel() {
+  if (currentModel) {
+    scene.remove(currentModel);
+    currentModel = null;
+  }
+}
+
+function centerModel(model) {
+  const box = new THREE.Box3().setFromObject(model);
+  const center = box.getCenter(new THREE.Vector3());
+  model.position.sub(center);
+  const size = box.getSize(new THREE.Vector3()).length();
+  const scale = 3 / size;
+  model.scale.setScalar(scale);
+}
+
+// === LOADERS ===
+function loadGLTF(url) {
+  const loader = new GLTFLoader();
+  loader.load(url, gltf => {
+    const model = gltf.scene;
+    centerModel(model);
+    scene.add(model);
+    currentModel = model;
+  });
+}
+
+function loadOBJ(url) {
+  const loader = new OBJLoader();
+  loader.load(url, obj => {
+    centerModel(obj);
+    scene.add(obj);
+    currentModel = obj;
+  });
+}
+
+function loadSTL(url) {
+  const loader = new STLLoader();
+  loader.load(url, geo => {
+    const mat = new THREE.MeshStandardMaterial({ color: 0x888888 });
+    const mesh = new THREE.Mesh(geo, mat);
+    centerModel(mesh);
+    scene.add(mesh);
+    currentModel = mesh;
+  });
+}
+
+function loadFBX(url) {
+  const loader = new FBXLoader();
+  loader.load(url, obj => {
+    centerModel(obj);
+    scene.add(obj);
+    currentModel = obj;
+  });
+}
+
+// === FILE UPLOAD ===
+// input element id in markup is "fileInput"
+const input = document.getElementById('fileInput');
+if (input) {
+  input.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  clearModel();
+
+  const url = URL.createObjectURL(file);
+  const ext = file.name.split('.').pop().toLowerCase();
+
+  switch (ext) {
+    case 'gltf':
+    case 'glb': loadGLTF(url); break;
+    case 'obj': loadOBJ(url); break;
+    case 'stl': loadSTL(url); break;
+    case 'fbx': loadFBX(url); break;
+    default: alert('Không hỗ trợ định dạng: ' + ext);
+  }
+  });
+} else {
+  console.warn('file input element #fileInput not found');
+}
+
+// === RENDER LOOP ===
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+window.addEventListener('resize', resizeRendererToContainer);
+animate();
+</script>
+</body>
+</html>

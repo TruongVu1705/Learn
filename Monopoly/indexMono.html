@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monopoly Money Tracker</title>
+    <link rel="stylesheet" href="styleMono.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body>
+
+<!-- Added a wrapper for better styling -->
+<div class="wrapper">
+
+<!-- PAGE 1 -->
+<div class="page" id="page1">
+    <h1>🎩 Monopoly</h1>
+
+    <div class="tab-buttons">
+        <button id="tabCreateBtn" class="tab-btn active" onclick="switchTab('create')">Tạo phòng</button>
+        <button id="tabJoinBtn" class="tab-btn" onclick="switchTab('join')">Vào phòng</button>
+    </div>
+
+    <!-- Create Room Section -->
+    <div id="createRoomSection" class="tab-content">
+        <input type="number" id="playerCount" placeholder="Số người chơi" min="1">
+        <div id="nameInputs"></div>
+        <button onclick="createRoom()">Tạo phòng mới</button>
+    </div>
+
+    <!-- Join Room Section -->
+    <div id="joinRoomSection" class="tab-content hidden">
+        <input type="text" id="roomCodeInput" placeholder="Nhập mã phòng" maxlength="6" style="text-transform: uppercase;">
+        <button onclick="joinRoom()">Tham gia phòng</button>
+    </div>
+
+    <div id="connectionStatus" class="status-message hidden">
+        <i class="fas fa-spinner fa-spin"></i> <span id="statusMessageText">Đang kết nối...</span>
+    </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page hidden" id="page2">
+    <div class="room-info-bar">
+        <span>Phòng: <strong id="roomCodeDisplay">-</strong></span>
+        <span id="roomStatusBadge" class="badge badge-loading">Kết nối...</span>
+    </div>
+
+    <h2>💰 Bảng tiền</h2>
+
+    <div id="scoreList"></div>
+
+    <button id="resetMoneyBtn" class="warning" onclick="resetMoney()">🔄 Reset tiền</button>
+    <button id="resetAllBtn" class="danger" onclick="resetAll()">🗑️ Thoát phòng / Reset</button>
+
+    <h3>📜 Lịch sử giao dịch</h3>
+    <div id="historyList"></div>
+    <button id="clearHistoryBtn" onclick="clearHistory()" class="danger">Xóa lịch sử</button>
+
+</div>
+
+<!-- PAGE 3 -->
+<div class="page hidden" id="page3">
+    <h2 id="actionTitle"></h2>
+
+    <div id="singlePlayer">
+        <label>👤 Người chơi</label>
+        <p id="selectedPlayer"></p>
+    </div>
+
+    <div id="transferPlayers" class="hidden">
+        <label>📤 Người chuyển</label>
+        <select id="fromPlayer"></select>
+
+        <label>📥 Người nhận</label>
+        <select id="toPlayer"></select>
+    </div>
+
+    <label>💵 Số tiền</label>
+    <select id="moneySelect" onchange="toggleCustomMoney()">
+        <option value="100000000">100 triệu</option>
+        <option value="200000000">200 triệu</option>
+        <option value="500000000">500 triệu</option>
+        <option value="600000000">600 triệu</option>
+        <option value="800000000">800 triệu</option>
+        <option value="900000000">900 triệu</option>
+        <option value="1000000000">1 tỷ</option>
+        <option value="1100000000">1 tỷ 1</option>
+        <option value="1200000000">1 tỷ 2</option>
+        <option value="1300000000">1 tỷ 3</option>
+        <option value="1400000000">1 tỷ 4</option>
+        <option value="1500000000">1 tỷ 5</option>
+        <option value="1800000000">1 tỷ 8</option>
+        <option value="2000000000">2 tỷ</option>
+        <option value="2100000000">2 tỷ 1</option>
+        <option value="2500000000">2 tỷ 5</option>
+        <option value="3000000000">3 tỷ</option>
+        <option value="3500000000">3 tỷ 5</option>
+        <option value="4000000000">4 tỷ</option>
+        <option value="5000000000">5 tỷ</option>
+        <option value="6000000000">6 tỷ</option>
+        <option value="7000000000">7 tỷ</option>
+        <option value="10000000000">10 tỷ</option>
+
+        <option value="custom">💰 Số tiền khác</option>
+    </select>
+
+    <input
+        id="customMoney"
+        class="hidden"
+        type="text"
+        inputmode="numeric"
+        placeholder="Nhập số tiền"
+        oninput="handleMoneyInput(this)"
+    >
+
+    <button onclick="applyMoney()">✅ Xác nhận</button>
+    <button onclick="backToPage2()">⬅ Quay lại</button>
+</div>
+
+<script src="scriptMono.js"></script>
+</body>
+</html>
